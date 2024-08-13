@@ -2,53 +2,76 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-# Function to check if a number is prime
-def is_prime(num):
-    if num <= 1:
-        return False
-    if num == 2:
-        return True
-    if num % 2 == 0:
-        return False
-    for i in range(3, int(num**0.5) + 1, 2):
-        if num % i == 0:
-            return False
-    return True
+def load_house_data(file_path='data/houses.txt'):
+    with open(file_path, 'r') as file:
+        data_lines = file.readlines()
 
-# Generate prime numbers up to a limit
-def generate_primes(limit):
-    primes = []
-    for i in range(2, limit):
-        if is_prime(i):
-            primes.append(i)
-    return primes
+    # Convert the data into a 2D list of floats
+    data_values = [list(map(float, line.split(','))) for line in data_lines]
+    
+    # Convert the list to a NumPy array
+    data_array = np.array(data_values)
+    
+    # Separate the features (X) and the target (y)
+    X_train = data_array[:, :-1]  # All columns except the last one
+    y_train = data_array[:, -1]   # The last column
+    
+    # Return the features and target
+    return X_train, y_train
 
-# Generate prime numbers up to 100,000
-limit = 10000000 
-primes = generate_primes(limit)
+# def main():
+#     # Load the data
+#     X_train, y_train = load_house_data()
 
-# Create dataset where X is a prime number and y is the next prime number
-X = np.array(primes[:-1]).reshape(-1, 1)  # Input features
-y = np.array(primes[1:])  # Labels (next prime number)
+#     # Initialize the scaler and scale the features
+#     scaler = StandardScaler()
+#     X_train_scaled = scaler.fit_transform(X_train)
+    
+#     # Initialize and train the model
+#     model = SGDRegressor(max_iter=10000)
+#     model.fit(X_train_scaled, y_train)
+    
+#     # Predict the values using the trained model
+#     y_pred = model.predict(X_train_scaled)
+    
+#     # Plot the actual vs predicted values
+#     plt.figure(figsize=(10, 6))
+#     plt.scatter(y_train, y_pred, color='blue', label='Predicted vs Actual')
+    
+#     # Plot a diagonal line for reference
+#     plt.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], color='red', linestyle='--', label='Perfect Prediction')
+    
+#     plt.xlabel('Actual Price')
+#     plt.ylabel('Predicted Price')
+#     plt.title('Actual vs Predicted House Prices')
+#     plt.legend()
+#     plt.show()
+    
+def main():
+    # Load the data
+    X_train, y_train = load_house_data()
 
-# Train the model using scikit-learn's LinearRegression
-model = LinearRegression()
-model.fit(X, y)
+    # Initialize and train the Linear Regression model
+    linear = LinearRegression()
+    linear.fit(X_train, y_train)
+    
+    # Predict the values using the trained model
+    y_predict = linear.predict(X_train)
+    
+    # Plot the actual vs predicted values
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y_train, y_predict, color='blue', label='Predicted vs Actual')
+    
+    # Plot a diagonal line for reference
+    plt.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], color='red', linestyle='--', label='Perfect Prediction')
+    
+    plt.xlabel('Actual Price')
+    plt.ylabel('Predicted Price')
+    plt.title('Actual vs Predicted House Prices')
+    plt.legend()
+    plt.show()
+    
+    # Print an example of a prediction for the first sample
+    print(f"Actual value: {y_train[0]:.2f}, Predicted value: {y_predict[0]:.2f}")
 
-# Predict the y values using the trained model
-y_pred = model.predict(X)
-
-# Plotting the data points and the model's prediction line
-plt.figure(figsize=(10, 6))
-plt.scatter(X, y, color='blue', label='Actual Prime Numbers')
-plt.plot(X, y_pred, color='red', label='Model Prediction Line')
-plt.xlabel('Prime Number')
-plt.ylabel('Next Prime Number')
-plt.title('Prime Number Prediction with Linear Regression')
-plt.legend()
-plt.grid(True)
-plt.show()
-
-# Output the coefficients and intercept
-print(f"Coefficient: {model.coef_[0]}")
-print(f"Intercept: {model.intercept_}")
+main()
