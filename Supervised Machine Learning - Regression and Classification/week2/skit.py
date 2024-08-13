@@ -21,33 +21,33 @@ def load_house_data(file_path='data/houses.txt'):
     # Return the features and target
     return X_train, y_train
 
-# def main():
-#     # Load the data
-#     X_train, y_train = load_house_data()
+def main():
+    # Load the data
+    X_train, y_train = load_house_data()
 
-#     # Initialize the scaler and scale the features
-#     scaler = StandardScaler()
-#     X_train_scaled = scaler.fit_transform(X_train)
+    # Initialize the scaler and scale the features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
     
-#     # Initialize and train the model
-#     model = SGDRegressor(max_iter=10000)
-#     model.fit(X_train_scaled, y_train)
+    # Initialize and train the model
+    model = SGDRegressor(max_iter=10000)
+    model.fit(X_train_scaled, y_train)
     
-#     # Predict the values using the trained model
-#     y_pred = model.predict(X_train_scaled)
+    # Predict the values using the trained model
+    y_pred = model.predict(X_train_scaled)
     
-#     # Plot the actual vs predicted values
-#     plt.figure(figsize=(10, 6))
-#     plt.scatter(y_train, y_pred, color='blue', label='Predicted vs Actual')
+    # Plot the actual vs predicted values
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y_train, y_pred, color='blue', label='Predicted vs Actual')
     
-#     # Plot a diagonal line for reference
-#     plt.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], color='red', linestyle='--', label='Perfect Prediction')
+    # Plot a diagonal line for reference
+    plt.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], color='red', linestyle='--', label='Perfect Prediction')
     
-#     plt.xlabel('Actual Price')
-#     plt.ylabel('Predicted Price')
-#     plt.title('Actual vs Predicted House Prices')
-#     plt.legend()
-#     plt.show()
+    plt.xlabel('Actual Price')
+    plt.ylabel('Predicted Price')
+    plt.title('Actual vs Predicted House Prices')
+    plt.legend()
+    plt.show()
     
 def main():
     # Load the data
