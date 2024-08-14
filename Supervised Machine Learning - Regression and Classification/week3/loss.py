@@ -34,8 +34,11 @@ def cost(X, y, w, b):
     total_cost = 0
     for i in range(m):
         fx = (np.dot(X[i], w)) + b
-        total_cost += (fx - y[i])**2   
-    return (1 / (2 *    m)) * total_cost
+        if y[i] == 1:
+            total_cost += -np.log(sigmoid(fx))
+        else:
+            total_cost += -np.log(1 - sigmoid(fx))
+    return (1 / m) * total_cost
 
 
 def data(x, w, b):
