@@ -64,7 +64,7 @@ def main():
     w = np.zeros(X_normalized.shape[1])
     b = 0
 
-    # Set hyperparameters
+   
     alpha = 0.01  # Learning rate
     iterations = 300
 
