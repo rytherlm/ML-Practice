@@ -33,19 +33,13 @@ def cost(X, y, w, b):
     m = X.shape[0]
     total_cost = 0
     for i in range(m):
-        fx = (np.dot(X[i], w)) + b
-        if y[i] == 1:
-            total_cost += -np.log(sigmoid(fx))
-        else:
-            total_cost += -np.log(1 - sigmoid(fx))
-    return (1 / m) * total_cost
+        fx = sigmoid(np.dot(X[i], w) + b)
+        total_cost += y[i] * np.log(fx) + (1 - y[i]) * np.log(1 - fx)
+    return (-1 / m) * total_cost
 
 
-def data(x, w, b):
-    ls = []
-    for i in x:
-        ls.append(sigmoid(expected_value(i, w, b)))
-    return np.array(ls)
+    
+
 
 def plot_decision_boundary(X, y, w, b):
     # Create a grid of values to plot the decision boundary
