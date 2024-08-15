@@ -37,7 +37,7 @@ def load_house_data(file_path='data/houses.txt'):
 #     # Plot the actual vs predicted values
 #     plt.figure(figsize=(10, 6))
 #     plt.scatter(y_train, y_pred, color='blue', label='Predicted vs Actual')
-    
+    # dd
 #     # Plot a diagonal line for reference
 #     plt.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], color='red', linestyle='--', label='Perfect Prediction')
     
