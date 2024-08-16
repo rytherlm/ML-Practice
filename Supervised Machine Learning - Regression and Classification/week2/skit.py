@@ -48,6 +48,7 @@ def load_house_data(file_path='data/houses.txt'):
 #     plt.show()
     
 def main():
+    #here
     # Load the data
     X_train, y_train = load_house_data()
 
