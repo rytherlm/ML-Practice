@@ -9,9 +9,7 @@ def z_score(X):
     std = np.std(X, axis=0)
     return (X - m) / std
 
-
-
-def derivative(X, yd, w, b):
+def derivative(X, yd, w, b, lambda_=1):
     m, n = X.shape
     wd, bd = np.zeros(n), 0
     for i in range(m):
@@ -19,31 +17,28 @@ def derivative(X, yd, w, b):
         for j in range(n):
             wd[j] = wd[j] + err * X[i, j]
         bd += err
-    return (wd * (1 / m)), (bd * (1 / m))
+    
+    wd = (wd * (1 / m)) + ((lambda_ / m) * w)  # Regularization term for weights
+    bd = bd * (1 / m)
+    return wd, bd
 
-def gradient(X, yd, w, b, alpha, iterations):
-    for _ in range(iterations):
-        wd, bd = derivative(X, yd, w, b)
-        w = w - (alpha * wd)
-        b = b - (alpha * bd)
-    return w, b
-
-def gradient(X, yd, w, b, alpha, iterations):
+def gradient(X, yd, w, b, alpha, iterations, lambda_=1):
     costs = []
     for _ in range(iterations):
-        wd, bd = derivative(X, yd, w, b)
+        wd, bd = derivative(X, yd, w, b, lambda_)
         w = w - (alpha * wd)
         b = b - (alpha * bd)
-        costs.append(cost(X, yd, w, b))
+        costs.append(cost(X, yd, w, b, lambda_))
     return w, b, costs
 
-def cost(X, y, w, b):
+def cost(X, y, w, b, lambda_=1):
     m = X.shape[0]
     total_cost = 0
     for i in range(m):
         fx = (np.dot(X[i], w)) + b
-        total_cost += (fx - y[i])**2   
-    return (1 / (2 *    m)) * total_cost
+        total_cost += (fx - y[i])**2  
+    reg_cost = (lambda_ / (2 * m)) * np.sum(w**2)  # Regularization term should include 1/2m factor
+    return ((1 / (2 * m)) * total_cost) + reg_cost
 
 
 def main():
@@ -51,23 +46,13 @@ def main():
     y = np.cos(x/2)
     print(y)
     X = np.c_[x, x**2, x**3,x**4, x**5, x**6, x**7, x**8, x**9, x**10, x**11, x**12, x**13]
-    X_norm = z_score(X)
-    # x_features = ["x", "x^2", "x^3"]
-    # print(X)
-
-    # fig, ax = plt.subplots(1, 3, figsize=(12, 3), sharey=True)
-    # for i in range(len(ax)):
-    #     ax[i].scatter(X[:, i], y)
-    #     ax[i].set_xlabel(x_features[i])
-
-    # plt.show()
-    
+    X_norm = z_score(X)    
     w = np.zeros(X_norm.shape[1])
     b = 0
     iterations = 100000
     
     
-    w,b,costs = gradient(X_norm,y,w,b,1e-1,iterations)
+    w,b,costs = gradient(X_norm,y,w,b,1e-1,iterations,lambda_=.1)
     
     
     plt.figure(figsize=(10, 6))

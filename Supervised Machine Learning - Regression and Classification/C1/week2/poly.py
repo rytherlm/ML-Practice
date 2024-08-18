@@ -51,10 +51,20 @@ def main():
     y = np.cos(x/2)
     print(y)
     X = np.c_[x, x**2, x**3,x**4, x**5, x**6, x**7, x**8, x**9, x**10, x**11, x**12, x**13]
-    X_norm = z_score(X)    
+    X_norm = z_score(X)
+    # x_features = ["x", "x^2", "x^3"]
+    # print(X)
+
+    # fig, ax = plt.subplots(1, 3, figsize=(12, 3), sharey=True)
+    # for i in range(len(ax)):
+    #     ax[i].scatter(X[:, i], y)
+    #     ax[i].set_xlabel(x_features[i])
+
+    # plt.show()
+    
     w = np.zeros(X_norm.shape[1])
     b = 0
-    iterations = 100000
+    iterations = 10000
     
     
     w,b,costs = gradient(X_norm,y,w,b,1e-1,iterations)
